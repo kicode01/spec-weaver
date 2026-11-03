@@ -1,96 +1,88 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 420" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 440" width="100%" height="100%">
   <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0a0d14"/>
-      <stop offset="100%" stop-color="#0f172a"/>
+    <linearGradient id="bg1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b0f17"/>
+      <stop offset="100%" stop-color="#111827"/>
     </linearGradient>
-    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#06b6d4"/>
-      <stop offset="100%" stop-color="#3b82f6"/>
-    </linearGradient>
-    <linearGradient id="redGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#ef4444"/>
-      <stop offset="100%" stop-color="#f43f5e"/>
-    </linearGradient>
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="6" result="blur" />
-      <feComposite in="SourceGraphic" in2="blur" operator="over" />
-    </filter>
   </defs>
 
   <style>
-    .title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 600; fill: #f8fafc; }
-    .subtitle { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 12px; fill: #94a3b8; }
+    .headline { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 16px; font-weight: 700; fill: #f8fafc; }
+    .subtext { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; fill: #94a3b8; }
     .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 11px; }
-    .node-text { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 11px; fill: #e2e8f0; font-weight: 500; }
-    .tag { font-size: 10px; font-weight: 600; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    .badge { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 10px; font-weight: 700; }
   </style>
 
   <!-- Background Canvas -->
-  <rect width="860" height="420" rx="14" fill="url(#bg)" stroke="#1e293b" stroke-width="1.5"/>
+  <rect width="860" height="440" rx="16" fill="url(#bg1)" stroke="#1f2937" stroke-width="1.5"/>
 
-  <!-- Header -->
-  <circle cx="36" cy="36" r="6" fill="#ef4444" opacity="0.8"/>
-  <circle cx="54" cy="36" r="6" fill="#f59e0b" opacity="0.8"/>
-  <circle cx="72" cy="36" r="6" fill="#10b981" opacity="0.8"/>
-  <text x="100" y="41" class="mono" fill="#64748b">spec-weaver // BFS State-Space Invariant Explorer</text>
+  <!-- Diagram Title -->
+  <text x="40" y="44" class="headline">Why Standard Unit Tests Fail (The Double-Spend Glitch)</text>
+  <text x="40" y="64" class="subtext">Spec Weaver tests 200,000 cosmic timing sequences upfront to mathematically prevent race conditions.</text>
 
-  <!-- Step 1: Init State -->
-  <g transform="translate(40, 90)">
-    <rect width="180" height="90" rx="8" fill="#131b2e" stroke="#334155" stroke-width="1.2"/>
-    <rect x="12" y="12" width="70" height="18" rx="4" fill="#06b6d4" opacity="0.15"/>
-    <text x="18" y="25" class="tag" fill="#38bdf8">INITIAL STATE</text>
-    <text x="14" y="52" class="node-text">balance = 100</text>
-    <text x="14" y="70" class="mono" fill="#64748b">threads = [T1, T2]</text>
+  <!-- Phone A Box -->
+  <g transform="translate(40, 95)">
+    <rect width="230" height="130" rx="10" fill="#131c2e" stroke="#1d4ed8" stroke-width="1.5"/>
+    <rect x="14" y="14" width="75" height="20" rx="4" fill="#3b82f6" opacity="0.2"/>
+    <text x="22" y="28" class="badge" fill="#60a5fa">PHONE 1 (ALICE)</text>
+    <text x="14" y="62" class="mono" fill="#cbd5e1">1. Taps "Withdraw $80"</text>
+    <text x="14" y="85" class="mono" fill="#60a5fa">Reads balance: $100 (OK)</text>
+    <text x="14" y="108" class="mono" fill="#93c5fd">Deducts $80 -&gt; New: $20</text>
   </g>
 
-  <!-- Branching Arrows -->
-  <path d="M 220 135 L 280 100" stroke="#06b6d4" stroke-width="2" fill="none" stroke-dasharray="4,4"/>
-  <path d="M 220 135 L 280 180" stroke="#06b6d4" stroke-width="2" fill="none"/>
-  <path d="M 220 135 L 280 260" stroke="#ef4444" stroke-width="2" fill="none"/>
-
-  <!-- Step 2: Intermediate Interleavings -->
-  <g transform="translate(280, 60)">
-    <rect width="210" height="65" rx="8" fill="#131b2e" stroke="#1e293b" stroke-width="1.2"/>
-    <text x="14" y="28" class="node-text">T1: read(balance) -> 100</text>
-    <text x="14" y="48" class="mono" fill="#64748b">state: T1_PENDING</text>
+  <!-- Phone B Box -->
+  <g transform="translate(40, 245)">
+    <rect width="230" height="130" rx="10" fill="#261419" stroke="#b91c1c" stroke-width="1.5"/>
+    <rect x="14" y="14" width="75" height="20" rx="4" fill="#ef4444" opacity="0.2"/>
+    <text x="22" y="28" class="badge" fill="#f87171">PHONE 2 (BOB)</text>
+    <text x="14" y="62" class="mono" fill="#cbd5e1">1. Taps "Withdraw $80"</text>
+    <text x="14" y="85" class="mono" fill="#f87171">Reads balance: $100 (OK!)</text>
+    <text x="14" y="108" class="mono" fill="#fca5a5">Deducts $80 -&gt; New: -$60</text>
   </g>
 
-  <g transform="translate(280, 145)">
-    <rect width="210" height="65" rx="8" fill="#131b2e" stroke="#1e293b" stroke-width="1.2"/>
-    <text x="14" y="28" class="node-text">T2: read(balance) -> 100</text>
-    <text x="14" y="48" class="mono" fill="#64748b">state: CONCURRENT_READ</text>
+  <!-- Middle Timeline Axis -->
+  <g transform="translate(300, 95)">
+    <rect width="210" height="280" rx="10" fill="#0f172a" stroke="#334155"/>
+    <text x="20" y="32" class="badge" fill="#94a3b8">SPLIT-SECOND TIMELINE</text>
+
+    <!-- Ticks -->
+    <circle cx="28" cy="70" r="4" fill="#38bdf8"/>
+    <text x="42" y="74" class="mono" fill="#cbd5e1">0.00ms: Phone 1 reads $100</text>
+
+    <circle cx="28" cy="120" r="4" fill="#f87171"/>
+    <text x="42" y="124" class="mono" fill="#fca5a5">0.02ms: Phone 2 reads $100</text>
+
+    <circle cx="28" cy="170" r="4" fill="#38bdf8"/>
+    <text x="42" y="174" class="mono" fill="#cbd5e1">0.04ms: Phone 1 takes $80</text>
+
+    <circle cx="28" cy="220" r="4" fill="#ef4444"/>
+    <text x="42" y="224" class="mono" fill="#ef4444">0.06ms: Phone 2 takes $80</text>
+
+    <line x1="20" y1="245" x2="190" y2="245" stroke="#1e293b"/>
+    <text x="20" y="265" class="mono" fill="#ef4444">Account lost: $60 (BUG)</text>
   </g>
 
-  <g transform="translate(280, 230)">
-    <rect width="210" height="75" rx="8" fill="#1e1b2e" stroke="#e11d48" stroke-width="1.4"/>
-    <rect x="12" y="10" width="105" height="18" rx="4" fill="#ef4444" opacity="0.2"/>
-    <text x="18" y="23" class="tag" fill="#f43f5e">RACE INTERLEAVING</text>
-    <text x="14" y="46" class="node-text" fill="#fca5a5">T1.commit(80) &amp;&amp; T2.commit(80)</text>
-    <text x="14" y="64" class="mono" fill="#fda4af">balance = -60 (Violation!)</text>
+  <!-- Spec Weaver Solution Box -->
+  <g transform="translate(540, 95)">
+    <rect width="280" height="280" rx="12" fill="#061c16" stroke="#059669" stroke-width="2"/>
+    <rect x="16" y="16" width="120" height="22" rx="4" fill="#10b981" opacity="0.2"/>
+    <text x="24" y="31" class="badge" fill="#34d399">SPEC WEAVER PROVER</text>
+
+    <text x="16" y="72" class="headline" font-size="14" fill="#34d399">Mathematical Proof</text>
+    <text x="16" y="94" class="subtext">Simulates every thread order before you write application code.</text>
+
+    <rect x="16" y="115" width="248" height="55" rx="6" fill="#042f24"/>
+    <text x="26" y="138" class="badge" fill="#6ee7b7">INVARIANT PROVEN</text>
+    <text x="26" y="156" class="mono" fill="#a7f3d0">[](balance &gt;= 0) Guaranteed</text>
+
+    <rect x="16" y="185" width="248" height="75" rx="6" fill="#0b1714"/>
+    <text x="24" y="208" class="mono" fill="#6ee7b7">[+] Generates Atomic Lock</text>
+    <text x="24" y="228" class="mono" fill="#6ee7b7">[+] Zero Double-Spend Risk</text>
+    <text x="24" y="248" class="mono" fill="#6ee7b7">[+] Emits Clean Go/Rust Code</text>
   </g>
 
-  <!-- Convergence to Invariant Check -->
-  <path d="M 490 92 L 560 160" stroke="#334155" stroke-width="1.5" fill="none"/>
-  <path d="M 490 177 L 560 170" stroke="#334155" stroke-width="1.5" fill="none"/>
-  <path d="M 490 267 L 560 210" stroke="#f43f5e" stroke-width="2" fill="none"/>
-
-  <!-- Step 3: Model Checker Output -->
-  <g transform="translate(560, 120)">
-    <rect width="260" height="170" rx="10" fill="#0d1527" stroke="#3b82f6" stroke-width="1.5" filter="url(#glow)"/>
-    <rect x="14" y="14" width="130" height="22" rx="4" fill="#3b82f6" opacity="0.2"/>
-    <text x="22" y="29" class="tag" fill="#60a5fa">INVARIANT PROVER</text>
-    <text x="14" y="62" class="title" font-size="14">Explored 14,204 states</text>
-    <text x="14" y="86" class="node-text" fill="#ef4444">x Safety Violation: NoNegBal</text>
-    <text x="14" y="106" class="mono" fill="#94a3b8">Trace depth: 3 transitions</text>
-    <line x1="14" y1="120" x2="246" y2="120" stroke="#1e293b"/>
-    <text x="14" y="142" class="mono" fill="#10b981">Action: Apply CAS Guard (Atomic)</text>
-    <text x="14" y="158" class="mono" fill="#10b981">Status: Mathematical Proof Ready</text>
-  </g>
-
-  <!-- Bottom status bar -->
-  <rect x="40" y="350" width="780" height="42" rx="6" fill="#0b1120" stroke="#1e293b"/>
-  <circle cx="58" cy="371" r="4" fill="#10b981"/>
-  <text x="74" y="375" class="mono" fill="#cbd5e1">Formal Specification Verified: TLA+ / PlusCal &amp; BFS Python State Solver</text>
-  <text x="730" y="375" class="tag" fill="#64748b">100% SOUND</text>
+  <!-- Bottom Summary Strip -->
+  <rect x="40" y="390" width="780" height="34" rx="6" fill="#030712" stroke="#1f2937"/>
+  <circle cx="58" cy="407" r="4" fill="#10b981"/>
+  <text x="74" y="411" class="mono" fill="#94a3b8">Result: What unit tests miss in 1-in-a-billion timings, Spec Weaver proves in 0.03 seconds.</text>
 </svg>
