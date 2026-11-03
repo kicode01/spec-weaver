@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 420" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0d14"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+    <linearGradient id="redGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#f43f5e"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <style>
+    .title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 600; fill: #f8fafc; }
+    .subtitle { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 12px; fill: #94a3b8; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 11px; }
+    .node-text { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 11px; fill: #e2e8f0; font-weight: 500; }
+    .tag { font-size: 10px; font-weight: 600; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+  </style>
+
+  <!-- Background Canvas -->
+  <rect width="860" height="420" rx="14" fill="url(#bg)" stroke="#1e293b" stroke-width="1.5"/>
+
+  <!-- Header -->
+  <circle cx="36" cy="36" r="6" fill="#ef4444" opacity="0.8"/>
+  <circle cx="54" cy="36" r="6" fill="#f59e0b" opacity="0.8"/>
+  <circle cx="72" cy="36" r="6" fill="#10b981" opacity="0.8"/>
+  <text x="100" y="41" class="mono" fill="#64748b">spec-weaver // BFS State-Space Invariant Explorer</text>
+
+  <!-- Step 1: Init State -->
+  <g transform="translate(40, 90)">
+    <rect width="180" height="90" rx="8" fill="#131b2e" stroke="#334155" stroke-width="1.2"/>
+    <rect x="12" y="12" width="70" height="18" rx="4" fill="#06b6d4" opacity="0.15"/>
+    <text x="18" y="25" class="tag" fill="#38bdf8">INITIAL STATE</text>
+    <text x="14" y="52" class="node-text">balance = 100</text>
+    <text x="14" y="70" class="mono" fill="#64748b">threads = [T1, T2]</text>
+  </g>
+
+  <!-- Branching Arrows -->
+  <path d="M 220 135 L 280 100" stroke="#06b6d4" stroke-width="2" fill="none" stroke-dasharray="4,4"/>
+  <path d="M 220 135 L 280 180" stroke="#06b6d4" stroke-width="2" fill="none"/>
+  <path d="M 220 135 L 280 260" stroke="#ef4444" stroke-width="2" fill="none"/>
+
+  <!-- Step 2: Intermediate Interleavings -->
+  <g transform="translate(280, 60)">
+    <rect width="210" height="65" rx="8" fill="#131b2e" stroke="#1e293b" stroke-width="1.2"/>
+    <text x="14" y="28" class="node-text">T1: read(balance) -> 100</text>
+    <text x="14" y="48" class="mono" fill="#64748b">state: T1_PENDING</text>
+  </g>
+
+  <g transform="translate(280, 145)">
+    <rect width="210" height="65" rx="8" fill="#131b2e" stroke="#1e293b" stroke-width="1.2"/>
+    <text x="14" y="28" class="node-text">T2: read(balance) -> 100</text>
+    <text x="14" y="48" class="mono" fill="#64748b">state: CONCURRENT_READ</text>
+  </g>
+
+  <g transform="translate(280, 230)">
+    <rect width="210" height="75" rx="8" fill="#1e1b2e" stroke="#e11d48" stroke-width="1.4"/>
+    <rect x="12" y="10" width="105" height="18" rx="4" fill="#ef4444" opacity="0.2"/>
+    <text x="18" y="23" class="tag" fill="#f43f5e">RACE INTERLEAVING</text>
+    <text x="14" y="46" class="node-text" fill="#fca5a5">T1.commit(80) &amp;&amp; T2.commit(80)</text>
+    <text x="14" y="64" class="mono" fill="#fda4af">balance = -60 (Violation!)</text>
+  </g>
+
+  <!-- Convergence to Invariant Check -->
+  <path d="M 490 92 L 560 160" stroke="#334155" stroke-width="1.5" fill="none"/>
+  <path d="M 490 177 L 560 170" stroke="#334155" stroke-width="1.5" fill="none"/>
+  <path d="M 490 267 L 560 210" stroke="#f43f5e" stroke-width="2" fill="none"/>
+
+  <!-- Step 3: Model Checker Output -->
+  <g transform="translate(560, 120)">
+    <rect width="260" height="170" rx="10" fill="#0d1527" stroke="#3b82f6" stroke-width="1.5" filter="url(#glow)"/>
+    <rect x="14" y="14" width="130" height="22" rx="4" fill="#3b82f6" opacity="0.2"/>
+    <text x="22" y="29" class="tag" fill="#60a5fa">INVARIANT PROVER</text>
+    <text x="14" y="62" class="title" font-size="14">Explored 14,204 states</text>
+    <text x="14" y="86" class="node-text" fill="#ef4444">x Safety Violation: NoNegBal</text>
+    <text x="14" y="106" class="mono" fill="#94a3b8">Trace depth: 3 transitions</text>
+    <line x1="14" y1="120" x2="246" y2="120" stroke="#1e293b"/>
+    <text x="14" y="142" class="mono" fill="#10b981">Action: Apply CAS Guard (Atomic)</text>
+    <text x="14" y="158" class="mono" fill="#10b981">Status: Mathematical Proof Ready</text>
+  </g>
+
+  <!-- Bottom status bar -->
+  <rect x="40" y="350" width="780" height="42" rx="6" fill="#0b1120" stroke="#1e293b"/>
+  <circle cx="58" cy="371" r="4" fill="#10b981"/>
+  <text x="74" y="375" class="mono" fill="#cbd5e1">Formal Specification Verified: TLA+ / PlusCal &amp; BFS Python State Solver</text>
+  <text x="730" y="375" class="tag" fill="#64748b">100% SOUND</text>
+</svg>
